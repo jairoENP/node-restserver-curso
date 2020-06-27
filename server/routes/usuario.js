@@ -32,7 +32,7 @@ app.get('/usuario',verificaToken, (req, res) => {
                     });
                 }
 
-                Usuario.count({estado:true}, (err,conteo) => {
+                Usuario.countDocuments({estado:true}, (err,conteo) => {
                     res.json({
                         ok:true,
                         usuarios,
@@ -49,6 +49,7 @@ app.get('/usuario',verificaToken, (req, res) => {
   app.post('/usuario',[verificaToken,verificaAdminRole], function (req, res) {
   
       let body = req.body;
+      
   
     let usuario = new Usuario({
         nombre: body.nombre,
@@ -67,7 +68,7 @@ app.get('/usuario',verificaToken, (req, res) => {
                 })
             }
 
-           // usuarioDB.password = null;
+          
 
             res.json({
                 ok:true,
@@ -80,6 +81,8 @@ app.get('/usuario',verificaToken, (req, res) => {
   app.put('/usuario/:id',[verificaToken,verificaAdminRole], function (req, res) {
       let id = req.params.id;
       let body = _.pick( req.body, ['nombre','email','img','role','estado']);
+
+      
 
         Usuario.findByIdAndUpdate(id,body,{new:true, runValidators:true},(err, usuarioDB) => {
             
